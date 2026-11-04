@@ -2,49 +2,50 @@
 
 **Five workers. An independent verifier. One inspectable Recorder.**
 
-Kronowave built Crown & Fluff as a functioning pet-card business during the Meta Global AI Developer Hackathon. The [live product](https://cf.kronowave.com/) and submission film show its customer experience and finished art. This separate repository lets a judge run an intelligible slice of its operating pattern locally: a simulated paid event starts the work; five role-scoped Muse Spark calls work on a sample card; Muse Image edits the supplied cat photograph into a **generic illustrated environment**; independent Muse Spark calls review consequential actions; local gates record the observed outcome; the Recorder displays each touchpoint.
+## Judge quick start
 
-The demonstration's prompts and visuals were newly written for this repo. The generated image has no Crown & Fluff greeting, typography, watermark, or production scene recipe. The production harness, card compositor, private agent instructions, cloud infrastructure, customers, and provider credentials remain in Kronowave's private systems.
+This repository is an executable, local demonstration of the operating loop behind [Crown & Fluff](https://cf.kronowave.com/). The product and submission film show the finished branded cards. This repo transforms the supplied Sphynx photo into a **generic illustration** and records the model calls, independent reviews, and local effects.
 
-## Run locally
+1. Open a terminal, clone this repository, and enter its folder. On Windows PowerShell, use `python`; on macOS/Linux, use `python3`.
+2. Put **your own Meta Model API key** in a file named `.env` **beside `app.py`**. The file must contain this exact assignment on one line: `MODEL_API_KEY=your_actual_key`. Replace the example value with your key. The key stays on your machine and `.env` is Git ignored.
+3. Start the app from that folder, open [http://127.0.0.1:8765](http://127.0.0.1:8765), and click **Start live Meta run · veto example**.
+4. Select the new **LIVE MODEL RUN** in the Recorder. The original photo appears immediately; the generated WebP appears beside it after Muse Image finishes. **Allow several minutes** for the sequential model calls. The page refreshes automatically.
+5. Scroll through the touchpoints. Open **Inspect receipt** on the `meta.call.completed`, `meta.image.completed`, and `verifier.verdict` entries to see model IDs, response references, usage, and decisions. The default run starts with sharing off, so the publication proposal is withheld. An approved image review assembles a downloadable **local** email with the generated WebP attached.
 
-Python 3.10+; no package installation, AWS account, payment account, or email service is needed.
-
-**Windows PowerShell** (including an active Conda environment):
+**Windows PowerShell**, from any folder where you want the clone:
 
 ```powershell
 git clone https://github.com/jz-krono/crown-and-fluff-submission-demo.git
 cd .\crown-and-fluff-submission-demo
-python --version
-python -m unittest discover -s tests -v
+Copy-Item .env.example .env
+notepad .env
+# Replace YOUR_KEY_HERE in the existing MODEL_API_KEY= line, then save and close Notepad.
 python app.py
 ```
 
-If `python` is unavailable in PowerShell, use `py -3` for the two Python commands.
-
-**macOS / Linux:**
+**macOS/Linux**:
 
 ```bash
 git clone https://github.com/jz-krono/crown-and-fluff-submission-demo.git
 cd crown-and-fluff-submission-demo
-python3 -m unittest discover -s tests -v
+cp .env.example .env
+# Edit .env: replace YOUR_KEY_HERE in the existing MODEL_API_KEY= line with your own key.
 python3 app.py
 ```
 
-Open **http://127.0.0.1:8765**. Click **Open sample replay**, **Show payment gate**, **Three-card sample**, or **Five-card sample** to explore without a key. Replays are visibly marked **SAMPLE REPLAY** or **SAMPLE PACK**; their example verdicts and pack prices are illustrative and make no Meta call.
+The **Open sample replay · no key** button is a labeled fixture for exploring the Recorder; it does not call Meta or generate an image. Payment, email delivery, publishing, and refunds are local simulations in this repo. The private Crown & Fluff production system and its branded image recipes are separate.
 
-For an actual Muse run, create a Meta **Model API** key at [dev.meta.ai](https://dev.meta.ai/), then either set it in the shell or copy `.env.example` to `.env` and replace `YOUR_KEY_HERE` **in `.env` only**. The tracked `.env.example` must keep its placeholder:
+## Project and technical details
 
-```bash
-export MODEL_API_KEY='your-own-model-api-key'
-python3 app.py
-```
+Kronowave built Crown & Fluff as a functioning pet-card business during the Meta Global AI Developer Hackathon. The [live product](https://cf.kronowave.com/) and submission film show its customer experience and finished art. This separate repository lets a judge run an intelligible slice of its operating pattern locally: a simulated paid event starts the work; five role-scoped Muse Spark calls work on a sample card; Muse Image edits the supplied cat photograph into a **generic illustrated environment**; independent Muse Spark calls review consequential actions; local gates record the observed outcome; the Recorder displays each touchpoint.
 
-In Windows PowerShell, create `.env` beside `app.py` and put `MODEL_API_KEY=` followed by your key on one line. The `.env` file stays local and is ignored by Git. If the page reports a missing key, run `Get-ChildItem -Force -Name .env*` in the repository folder: Windows Notepad may have saved `.env.txt`, which must be renamed to `.env`. Refresh the page after saving. Delete `.env` or unset the variable when your review is complete. **Never paste a key into GitHub, the app's browser screen, an issue, or a submission form.**
+The demonstration's prompts and visuals were newly written for this repo. The generated image has no Crown & Fluff greeting, typography, watermark, or production scene recipe. The production harness, card compositor, private agent instructions, cloud infrastructure, customers, and provider credentials remain in Kronowave's private systems.
 
-Click **Start live Meta run · veto example**. The run makes five role-scoped Muse Spark calls (Operations, Studio, Finance, Customer Care, Marketing), three independent Muse Spark verifier calls (visual delivery review, fee review, and publication review), and one Muse Image edit. The image call can take several minutes; the Recorder updates as results arrive. The verifier receives the source and generated **image bytes** for the delivery review. Sharing permission starts off, so the publication proposal must be held by the verifier and/or local permission gate. **Run with sharing approved** exercises the allowed local publication branch. The same Meta key is used only in the server process for outbound API calls; it is not sent to the browser or stored in the Recorder.
+## Additional local notes
 
-This makes actual Meta API calls and may incur your Model API usage charges. Each click creates a fresh run. Muse Image interprets the requested `1024x1024` as an aspect ratio; the Recorder records the actual returned WebP dimensions.
+Python 3.10+ is required; no package installation or cloud account is needed. If `python` is unavailable in PowerShell, use `py -3 app.py`. Run `python -m unittest discover -s tests -v` (or `python3` on macOS/Linux) for the local tests.
+
+The live path makes five role-scoped Muse Spark worker calls, three independent Muse Spark verifier calls (including a visual review of the source and generated **image bytes**), and one Muse Image edit. Each click creates a new run and may incur your Model API usage charges. **Run with sharing approved** exercises the alternate local publication branch. The actual returned WebP dimensions are recorded in the image receipt.
 
 ## What the Recorder proves
 
