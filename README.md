@@ -10,9 +10,23 @@ The demonstration's prompts and visuals were newly written for this repo. The ge
 
 Python 3.10+; no package installation, AWS account, payment account, or email service is needed.
 
+**Windows PowerShell** (including an active Conda environment):
+
+```powershell
+git clone https://github.com/jz-krono/crown-and-fluff-submission-demo.git
+cd .\crown-and-fluff-submission-demo
+python --version
+python -m unittest discover -s tests -v
+python app.py
+```
+
+If `python` is unavailable in PowerShell, use `py -3` for the two Python commands.
+
+**macOS / Linux:**
+
 ```bash
 git clone https://github.com/jz-krono/crown-and-fluff-submission-demo.git
-cd crown-and-fluff-operating-demo
+cd crown-and-fluff-submission-demo
 python3 -m unittest discover -s tests -v
 python3 app.py
 ```
@@ -26,7 +40,7 @@ export MODEL_API_KEY='your-own-model-api-key'
 python3 app.py
 ```
 
-Windows PowerShell: use `py -3` instead of `python3`; set `$env:MODEL_API_KEY = 'your-own-model-api-key'` in your current shell. The optional `.env` stays local and is ignored by Git. Delete `.env` or unset the variable when your review is complete. **Never paste a key into GitHub, the app's browser screen, an issue, or a submission form.**
+In Windows PowerShell, run `Copy-Item .env.example .env`, then open `.env` locally and replace its placeholder with your key. The optional `.env` stays local and is ignored by Git. Delete `.env` or unset the variable when your review is complete. **Never paste a key into GitHub, the app's browser screen, an issue, or a submission form.**
 
 Click **Start live Meta run · veto example**. The run makes five role-scoped Muse Spark calls (Operations, Studio, Finance, Customer Care, Marketing), three independent Muse Spark verifier calls (visual delivery review, fee review, and publication review), and one Muse Image edit. The image call can take several minutes; the Recorder updates as results arrive. The verifier receives the source and generated **image bytes** for the delivery review. Sharing permission starts off, so the publication proposal must be held by the verifier and/or local permission gate. **Run with sharing approved** exercises the allowed local publication branch. The same Meta key is used only in the server process for outbound API calls; it is not sent to the browser or stored in the Recorder.
 
