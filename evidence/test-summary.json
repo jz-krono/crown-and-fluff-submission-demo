@@ -1,0 +1,15 @@
+{
+  "scope": "Crown & Fluff TEST operating record, 31 October 2026 01:00Z to 3 November 2026 01:00Z",
+  "sourceBaseline": "Kronowave private operating record reviewed 4 November 2026",
+  "note": "Aggregate, redacted TEST evidence. No LIVE revenue, customer records, provider IDs, credentials, or production prompts appear here.",
+  "metrics": {
+    "paid TEST orders": "26",
+    "initial TEST card deliveries": "68",
+    "revision deliveries": "11",
+    "TEST refunds": "8",
+    "workforce proposals": "263",
+    "independent verifier verdicts": "263",
+    "operating Instagram posts verified": "3",
+    "X publication": "1"
+  }
+}
