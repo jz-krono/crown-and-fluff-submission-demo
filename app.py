@@ -64,11 +64,11 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/config":
             try:
                 key_from_environment()
-                keyed = True
-            except MetaError:
-                keyed = False
-            return self._send(200, {"keyConfigured": keyed, "mode": "LOCAL DEMO",
-                                    "sourcePhoto": "examples/meta-source.jpg"})
+                keyed, key_issue = True, ""
+            except MetaError as exc:
+                keyed, key_issue = False, str(exc)
+            return self._send(200, {"keyConfigured": keyed, "keyIssue": key_issue,
+                                    "mode": "LOCAL DEMO", "sourcePhoto": "examples/meta-source.jpg"})
         if path == "/api/runs":
             return self._send(200, engine.ledger.list())
         if path == "/api/source":

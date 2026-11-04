@@ -70,7 +70,7 @@ async function show(id, scroll) {
 async function act(id, action, data={}) { try {const result=await post(`/api/runs/${encodeURIComponent(id)}/${action}`,data);notice(result.newEffect===false?'Duplicate request reused the original effect.':'Local action recorded.');previousEventCount=-1;await refresh();}catch(e){notice(e.message);} }
 async function init() {
   $('run-live').onclick=()=>start('live',false);$('run-consent').onclick=()=>start('live',true);$('run-sample').onclick=()=>start('sample');$('run-pending').onclick=()=>start('pending');$('run-pack3').onclick=()=>start('pack3');$('run-pack5').onclick=()=>start('pack5');$('refresh').onclick=()=>refresh();
-  try {const config=await request('/api/config');$('key-state').textContent=config.keyConfigured?'Muse key configured locally':'Add a key for live Meta calls';
+  try {const config=await request('/api/config');$('key-state').textContent=config.keyConfigured?'Muse key configured locally':'Add a key for live Meta calls';if(!config.keyConfigured)notice(config.keyIssue);
     const evidence=await request('/api/evidence');$('evidence-stats').innerHTML=Object.entries(evidence.metrics).map(([label,value])=>`<div><strong>${escapeHTML(value)}</strong><span>${escapeHTML(label)}</span></div>`).join('');
     await refresh();setInterval(()=>refresh(),1800);
   } catch(e) {notice(e.message);}

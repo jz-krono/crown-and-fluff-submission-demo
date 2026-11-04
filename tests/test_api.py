@@ -1,14 +1,16 @@
 import base64
 import json
+import os
 import tempfile
 import threading
 import unittest
 from http.server import ThreadingHTTPServer
 from pathlib import Path
+from unittest.mock import patch
 from urllib.request import Request, urlopen
 
 from app import Handler
-from meta_client import MetaClient, MetaError, webp_dimensions
+from meta_client import MetaClient, MetaError, key_from_environment, webp_dimensions
 from workflow import RunEngine
 
 
@@ -30,6 +32,19 @@ class Response:
 
 
 class ApiTests(unittest.TestCase):
+    def test_windows_key_filename_and_utf8_bom(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            with patch.dict(os.environ, {"MODEL_API_KEY": ""}), patch("meta_client.__file__", str(root / "meta_client.py")):
+                with self.assertRaisesRegex(MetaError, "Save a file named .env"):
+                    key_from_environment()
+                (root / ".env.txt").write_text("MODEL_API_KEY=demo-key")
+                with self.assertRaisesRegex(MetaError, "Found .env.txt"):
+                    key_from_environment()
+                (root / ".env.txt").rename(root / ".env")
+                (root / ".env").write_text("\ufeff  MODEL_API_KEY = demo-key  \n", encoding="utf-8")
+                self.assertEqual(key_from_environment(), "demo-key")
+
     def test_tracked_key_example_stays_a_placeholder(self):
         root = Path(__file__).resolve().parents[1]
         example = (root / ".env.example").read_text()

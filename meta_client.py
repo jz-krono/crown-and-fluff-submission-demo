@@ -22,16 +22,31 @@ class MetaError(Exception):
 
 def key_from_environment():
     key = os.environ.get("MODEL_API_KEY", "").strip()
-    if not key:
-        path = Path(__file__).parent / ".env"
-        if path.exists():
-            for line in path.read_text(encoding="utf-8").splitlines():
-                if line.startswith("MODEL_API_KEY="):
-                    key = line.split("=", 1)[1].strip().strip("'\"")
-                    break
-    if not key or key == "YOUR_KEY_HERE":
-        raise MetaError("Set MODEL_API_KEY in your environment or a local .env file")
-    return key
+    if key and key != "YOUR_KEY_HERE":
+        return key
+
+    path = Path(__file__).parent / ".env"
+    if path.is_file():
+        try:
+            lines = path.read_text(encoding="utf-8-sig").splitlines()
+        except (OSError, UnicodeError):
+            raise MetaError("Cannot read .env next to app.py; save it as UTF-8 text") from None
+        for raw in lines:
+            line = raw.strip()
+            if not line or line.startswith("#"):
+                continue
+            name, separator, value = line.partition("=")
+            if separator and name.strip() == "MODEL_API_KEY":
+                key = value.strip().strip("'\"")
+                if key and key != "YOUR_KEY_HERE":
+                    return key
+                break
+
+    if path.with_name(".env.txt").is_file():
+        raise MetaError("Found .env.txt next to app.py. Rename it to .env (remove .txt).")
+    if path.is_file():
+        raise MetaError("Found .env next to app.py, but MODEL_API_KEY has no key value.")
+    raise MetaError("Save a file named .env next to app.py in " + str(path.parent))
 
 
 def media_type(data):
