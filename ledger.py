@@ -4,6 +4,7 @@ import json
 import sqlite3
 import threading
 import uuid
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -37,10 +38,15 @@ class Ledger:
                 );
             """)
 
+    @contextmanager
     def _connect(self):
         db = sqlite3.connect(self.path, timeout=30)
-        db.row_factory = sqlite3.Row
-        return db
+        try:
+            db.row_factory = sqlite3.Row
+            with db:
+                yield db
+        finally:
+            db.close()
 
     def create(self, mode, consent, paid, photo_sha, amount_cents=1000):
         run_id = "DEMO-" + uuid.uuid4().hex[:12].upper()
